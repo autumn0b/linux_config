@@ -1,0 +1,73 @@
+* {
+	font-family: "Monofur";
+	font-size: 22px;
+	color: #e0def4;
+}
+
+/* Accent color */
+#workspaces button,
+#tray,
+#clock {
+	border-radius: 2px;
+}
+
+window#waybar {
+	background: rgba(35, 33, 54, 0.9);
+}
+
+/* Calendar */
+window#waybar.hidden {
+	opacity: 0.9;
+}
+
+
+/*============*/
+/* WORKSPACES */
+/*============*/
+
+#workspaces {
+	margin: 0px 0px 0px 4px;
+}
+
+button:hover {
+	background: inherit;
+	box-shadow: inherit;
+	text-shadow: inherit;
+}
+
+#workspaces button {
+	color: #e0def4;
+	padding: 0px 8px;
+	margin: 0px 0px 0px 0px;
+	border: none;
+}
+
+
+#workspaces button.active {
+	color: #e0def4;
+	/*#4b4673*/
+	border: 1px solid #e0def4;
+}
+
+#workspaces button.urgent {
+	background-color: #eb4d4b;
+}
+
+
+/*============*/
+/* RIGHT SIDE */
+/*============*/
+
+#tray,
+#clock {
+	padding: 2px 4px;
+	color: #e0def4;
+}
+
+#clock {
+	margin: 0px 8px 0px 0px;
+}
+
+#tray {
+	margin: 0px 4px 0px 0px;
+}

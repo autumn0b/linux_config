@@ -1,0 +1,132 @@
+configuration {
+	display-drun: "";
+	modi: "drun,run";
+	font: "Monofur 18";
+	show-icons: true;
+}
+
+@import "default"
+
+* {
+	bg: #191724;
+	cur: #1f1d2e;
+	fgd: #e0def4;
+	cmt: #6e6a86;
+	cya: #9ccfd8;
+	grn: #31748f;
+	ora: #ebbcba;
+	pur: #c4a7e7;
+	red: #eb6f92;
+	yel: #f6c177;
+
+	foreground: @fgd;
+	background: @bg;
+	active-background: @grn;
+	urgent-background: @red;
+
+	selected-background: @active-background;
+	selected-urgent-background: @urgent-background;
+	selected-active-background: @active-background;
+	separatorcolor: @active-background;
+	bordercolor: @ora;
+}
+
+element-text {
+}
+
+#window {
+	background-color: @background;
+	border: 0;
+	border-radius: 0;
+	padding:          0;
+}
+#mainbox {
+	border:  0;
+	padding: 0;
+}
+#message {
+	border:       0;
+	padding:      0;
+}
+#listview {
+	fixed-height: 0;
+	border:       0;
+	spacing:      0;
+	scrollbar:    false;
+	padding:      0;
+}
+#element {
+	border:  0;
+	padding: 0;
+}
+
+#element.normal.normal {
+	background-color: @background;
+	text-color: #6e6a86;
+}
+#element.alternate.normal {
+	background-color: @background;
+	text-color: #6e6a86;
+}
+
+#element.normal.urgent {
+	background-color: @urgent-background;
+}
+#element.normal.active {
+	background-color: @active-background;
+}
+#element.selected.normal {
+	background-color: #191724;
+	text-color: #e0def4;
+}
+#element.selected.urgent {
+	background-color: @selected-urgent-background;
+}
+#element.selected.active {
+	background-color: @selected-active-background;
+}
+#element.alternate.urgent {
+	background-color: @urgent-background;
+}
+#element.alternate.active {
+	background-color: @active-background;
+}
+#scrollbar {
+	width:        2px;
+	border:       0;
+	handle-width: 8px;
+	padding:      0;
+}
+#sidebar {
+	border:       0;
+}
+#button.selected {
+	background-color: @selected-background;
+}
+#inputbar {
+	spacing:    0;
+	padding:    0;
+	background-color: #26233a;
+	background-color: #2a273f;
+}
+#case-indicator {
+	spacing:    0;
+}
+#entry {
+	spacing:    0;
+}
+#prompt {
+	spacing:    0;
+}
+#inputbar {
+	children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+	padding: 3px;
+}
+#textbox-prompt-colon {
+	str:        "";
+	margin:     0px 0.3em 0em 0em;
+	color: #ffff00;
+}
+entry {
+    placeholder: "";
+}

@@ -1,0 +1,40 @@
+{
+	"layer": "top",
+	"position": "top",
+	"height": 24,
+	"spacing": 5,
+	"modules-left": [
+		"hyprland/workspaces"
+	],
+	"modules-right": [
+		"date",
+		"clock#time",
+		"clock#date",
+		"tray"
+	],
+
+	"tray": {
+		"spacing": 10
+	},
+	"clock#time": {
+		"format": "{:%I:%M %p}"
+	},
+	"clock#date": {
+		"format": "{:%a %Y-%m-%d}",
+		"tooltip-format": "<span background='#232136' font-size='16pt'>{calendar}</span>",
+		"calendar": {
+			"mode"          : "year",
+			"mode-mon-col"  : 3,
+			"weeks-pos"     : "none",
+			"on-scroll"     : 1,
+			"on-click-right": "mode",
+			"format": {
+				"months":     "<span color='#65b1cd'><b>{}</b></span>",
+				"days":       "<span color='#e0def4'><b>{}</b></span>",
+				/*"weeks":      "<span color='#817c9c'><b>W{}</b></span>",*/
+				"weekdays":   "<span color='#a6dae3'><b>{}</b></span>",
+				"today":      "<span color='#d84f76'><b><u>{}</u></b></span>"
+			}
+		}
+	}
+}
