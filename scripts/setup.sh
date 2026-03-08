@@ -1,3 +1,8 @@
+mkdir -p ~/sync/
+mv ~/linux_config/ ~/sync/
+
+~/sync/linux_config/scripts/loadc.sh
+
 tldr --update
 sudo systemctl enable keyd --now
 sudo keyd reload
