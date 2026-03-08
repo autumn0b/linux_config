@@ -1,3 +1,4 @@
+tldr --update
 sudo systemctl enable keyd --now
 sudo keyd reload
 
