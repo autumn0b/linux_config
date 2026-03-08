@@ -6,6 +6,7 @@ cp -r ~/sync/linux_config/rofi/ ~/.config/
 
 cp -r ~/sync/linux_config/ghostty/ ~/.config/
 cp -r ~/sync/linux_config/nvim/ ~/.config/
+cp -r ~/sync/linux_config/yazi/ ~/.config/
 cp ~/sync/linux_config/.zshrc ~/.zshrc
 
 printf "Warning: { nix, reaper, and factorio } config files are not automatically copied\n"
