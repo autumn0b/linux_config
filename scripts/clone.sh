@@ -8,7 +8,7 @@ cp -r ~/sync/linux_config/ghostty/ ~/.config/ghostty/
 cp -r ~/sync/linux_config/nvim/ ~/.config/nvim/
 cp ~/sync/linux_config/.zshrc ~/.zshrc
 
-printf("Warning: { nix, reaper, and factorio } config files are not automatically copied")
+printf "Warning: { nix, reaper, and factorio } config files are not automatically copied\n"
 
-sudo mkdir -p ~/etc/keyd/
+sudo mkdir -p /etc/keyd/
 sudo cp -r ~/sync/linux_config/keyd/ /etc/keyd/
