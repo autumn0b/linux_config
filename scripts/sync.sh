@@ -108,4 +108,4 @@ if [ -d "/etc/nixos/" ]; then
 	printf "  nixos cp\n\n"
 fi
 
-echo "complete\n"
+printf "complete\n"
