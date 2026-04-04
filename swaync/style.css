@@ -1,0 +1,22 @@
+.notification {
+	background: #191724;
+	background: #26233a;
+	font-family: "JetBrainsMono Nerd Font Mono";
+	border-radius: 0;
+	border: 0;
+	border-color: #3e8fb0;
+	box-shadow: 4px 4px #191724, 2px 2px #393552 inset;
+}
+
+.notification * {
+	color: #e0def4;
+}
+
+.notification-default-action:hover {
+	background: #26233a;
+	border-radius: 0;
+}
+
+.close-button {
+	border-radius: 0;
+}

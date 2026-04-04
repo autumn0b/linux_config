@@ -1,18 +1,17 @@
 vim.cmd("filetype plugin off")
 
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-vim.g.have_nerd_font = true
+vim.g.have_nerd_font = true -- change later when you figure out wtf this impacts
 
--- General Neovim API config
-require("config.keybinds")
-require("config.options")
-
--- Plugins
-require("config.lazy")          -- Community
-require("personal.notepad")     -- Personal
-require("personal.diagnostics") -- Personal
-
+require("colors.nightfox")
 vim.cmd.colorscheme "duskfox"
 
+require("config.keybinds")
+require("config.options")
+require("plugins.mini")
+require("plugins.auto_pairs")
+require("plugins.blink_cmp")
+-- lsp
+-- telescope
+-- treesitter

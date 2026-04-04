@@ -1,0 +1,16 @@
+# source directory
++$HOME/sync/config
+
+# target_dir:dest_dir
+clink
+foot
+ghostty
+hypr
+keyd:/etc/keyd
+zsh/.zshrc:/home/autumn/.zshrc
+nvim
+rofi
+swaync
+waybar
+yazi
+zellij

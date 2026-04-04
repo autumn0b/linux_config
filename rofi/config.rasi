@@ -35,7 +35,7 @@ configuration {
 	background-color: @background;
 	border: 0;
 	border-radius: 0;
-	padding:          0;
+	padding:       0px;
 }
 #mainbox {
 	border:  0;

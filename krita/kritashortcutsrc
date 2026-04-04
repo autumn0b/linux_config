@@ -1,0 +1,17 @@
+[Shortcuts]
+KisToolCrop=none
+KisToolSelectOutline=S
+KritaFill/KisToolGradient=none
+KritaShape/KisToolBrush=none
+KritaShape/KisToolDyna=B
+KritaTransform/KisToolMove=G
+deselect=D
+edit_copy=C
+edit_cut=X
+edit_paste=V
+edit_redo=Shift+Z
+edit_undo=Z
+options_configure=Y
+reset_fg_bg=none
+toggle_fg_bg=none
+undo_polygon_selection=none
