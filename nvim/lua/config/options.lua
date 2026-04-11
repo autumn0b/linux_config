@@ -1,3 +1,5 @@
+vim.opt.swapfile = false
+
 -- Left col
 vim.opt.number = true
 vim.opt.relativenumber = true

@@ -44,6 +44,8 @@ zshc() {
 		nvim $HOME/sync/config/zsh/aliases.zsh
 	elif [[ "$1" == f ]]; then
 		nvim $HOME/sync/config/zsh/functions.zsh
+	elif [[ "$1" == n ]]; then
+		nvim $HOME/sync/config/zsh/nvim.zsh
 	fi
 }
 
@@ -52,5 +54,14 @@ font() {
 		fc-list : family | sed 's/,.*//' | sort -u
 	elif [[ "$1" == s ]]; then
 		fc-list : family | grep "$2"
+	fi
+}
+
+
+fkit() {
+	if [[ "$1" == p ]]; then
+		"$HOME/sync/config/scripts/fabrikit/pacfile.sh"
+	elif [[ "$1" == l ]]; then
+		$HOME/sync/config/scripts/fabrikit/clink.sh
 	fi
 }

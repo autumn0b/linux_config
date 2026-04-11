@@ -1,7 +1,6 @@
-vim.cmd("filetype plugin off")
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.cmd("filetype plugin off")
 vim.g.have_nerd_font = true -- change later when you figure out wtf this impacts
 
 require("colors.nightfox")
@@ -12,6 +11,7 @@ require("config.options")
 require("plugins.mini")
 require("plugins.auto_pairs")
 require("plugins.blink_cmp")
+require("plugins.lsp")
 -- lsp
 -- telescope
 -- treesitter

@@ -1,11 +1,3 @@
-fkit() {
-	if [[ "$1" == p ]]; then
-		$HOME/sync/code/scripts/fabrikit/pacfile.sh
-	elif [[ "$1" == l ]]; then
-		$HOME/sync/code/scripts/fabrikit/clink.sh
-	fi
-}
-
 # Arch
 alias paci="sudo pacman -S"    # [i]nstall
 alias pacu="sudo pacman -Syu"  # [u]pdate
@@ -37,7 +29,12 @@ alias sys="systemctl -v"
 alias sysu="systemctl -v --user"
 alias restart="systemctl reboot"
 
+# CLI
+alias ls='eza --icons --group-directories-first'
+alias ll='eza -la --icons --git --group-directories-first'
+alias lt='eza --tree --level=2 --icons'
 
+alias cd="z"
 
 # Programs
 alias grep="grep --color --ignore-case"
@@ -58,7 +55,7 @@ alias hypr="start-hyprland"
 # Directories
 alias notepad="nvim $HOME/sync/text/notepad.txt"
 alias code="nvim $HOME/sync/code/"
-alias pkgs="nvim $HOME/sync/code/scripts/packages.md"
+alias pkgs="nvim $HOME/sync/config/fabrikit/pkgs.conf"
 alias configs="nvim $HOME/.config/fabrikit/links.conf"
 
 
@@ -70,8 +67,11 @@ alias fishc="nvim $HOME/sync/config/fish/"
 alias footc="nvim $HOME/.config/foot/foot.ini"
 alias ghostc="nvim $HOME/.config/ghostty/config"
 alias nvimc="nvim $HOME/.config/nvim/init.lua"
+alias zellijc="nvim $HOME/.config/zellij"
 
 alias hyprc="nvim $HOME/.config/hypr/hyprland.conf"
+alias idlec="nvim $HOME/.config/hypr/hypridle.conf"
 alias bgc="nvim $HOME/.config/hypr/hyprpaper.conf"
 alias waybarc="nvim $HOME/.config/waybar/style.css"
 alias rofic="nvim $HOME/.config/rofi/config.rasi"
+

@@ -284,7 +284,8 @@ load_plugins {
 web_client {
     font "monospace"
 }
- 
+
+theme_dir "/home/autumn/.config/zellij/themes"
 theme "rose-pine"
 show_startup_tips false
 default_layout "default"
