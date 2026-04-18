@@ -13,10 +13,16 @@ font-size = 12
 # ========
 # Keybinds
 # ========
-keybind = ctrl+t=new_tab
-keybind = ctrl+w=close_tab
-keybind = ctrl+shift+page_down=move_tab:1
-keybind = ctrl+shift+page_up=move_tab:-1
+
+# keybind = ctrl+t=new_tab
+# keybind = ctrl+w=close_tab
+# keybind = ctrl+shift+page_down=move_tab:1
+# keybind = ctrl+shift+page_up=move_tab:-1
+
+keybind = ctrl+t=unbind
+keybind = ctrl+w=unbind
+keybind = ctrl+shift+page_down=unbind
+keybind = ctrl+shift+page_up=unbind
 
 
 # ====

@@ -14,5 +14,5 @@ vim.keymap.set("n", "<leader>q", "<cmd>q<cr>")
 vim.keymap.set("n", "<leader>,", "<cmd>bp<cr>")
 vim.keymap.set("n", "<leader>.", "<cmd>bn<cr>")
 
---
-vim.keymap.set("n", "<leader>cs", "<S-i>/* <esc><S-a> */<esc>_") -- [c]omment [s]tyles (css)
+vim.keymap.set('n', '<leader>c', 'gcc', { desc = 'Toggle comment', remap = true })
+vim.keymap.set('v', '<leader>c', 'gc', { desc = 'Toggle comment', remap = true })

@@ -52,6 +52,7 @@ button:hover {
 
 #workspaces button.urgent {
 	background-color: #eb4d4b;
+	border-radius: 2px;
 }
 
 
@@ -59,10 +60,20 @@ button:hover {
 /* RIGHT SIDE */
 /*============*/
 
+tooltip {
+	background: rgba(0,0,0,0);
+	border: none;
+	background: #232136;
+	border-radius: 0;
+}
+
 #tray,
 #clock {
 	padding: 2px 4px;
 	color: #e0def4;
+}
+
+#network {
 }
 
 #clock {

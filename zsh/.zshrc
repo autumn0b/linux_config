@@ -35,8 +35,9 @@ HISTFILE=~/.cache/zsh/history/
 # Keybinds #
 # ======== #
 
-if [[ $- == *i* ]] && [[ -z "$ZELLIJ" ]]; then
-    zellij
+if [[ $- == *i* ]] && [[ -z "$ZELLIJ" ]] && \
+   [[ -n "$WAYLAND_DISPLAY" || -n "$DISPLAY" ]]; then
+	zellij
 fi
 
 # copy
@@ -110,11 +111,9 @@ preexec() { echo -ne "\e[5 q" ;}
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
-source $HOME/sync/config/zsh/functions.zsh
+source $HOME/sync/config/zsh/fabrikit.zsh
 source $HOME/sync/config/zsh/aliases.zsh
 source $HOME/sync/config/zsh/nvim.zsh
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-

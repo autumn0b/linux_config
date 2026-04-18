@@ -10,18 +10,27 @@
 		"date",
 		"clock#time",
 		"clock#date",
+		"network",
 		"tray"
 	],
 
 	"tray": {
 		"spacing": 10
 	},
+	"network": {
+		"format-wifi": "({signalStrength}%)",
+		"format-ethernet": "{ipaddr}",
+		"format-disconnected": "disconnected",
+		"on-click": "foot -a nmtui -e nmtui",
+
+		"tooltip-format-wifi": "{essid}"
+	},
 	"clock#time": {
 		"format": "{:%I:%M %p}"
 	},
 	"clock#date": {
 		"format": "{:%a %Y-%m-%d}",
-		"tooltip-format": "<span background='#232136' font-size='16pt'>{calendar}</span>",
+		"tooltip-format": "<span font-size='12pt'>{calendar}</span>",
 		"calendar": {
 			"mode"          : "year",
 			"mode-mon-col"  : 3,
