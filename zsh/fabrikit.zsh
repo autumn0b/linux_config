@@ -11,16 +11,16 @@ alias pacsl="pacman -Q"                          # [s]earch [l]ocal
 alias pacopt="pacman -Sp --print-format '%n : %O'" # [o]ptional dependencies
 
 
-fkit_path="$HOME/sync/config/scripts/fabrikit"
+sh_path="$HOME/sync/config/scripts"
 
 pf() {
-	"$fkit_path/pacfile.sh" $@
+	"$sh_path/pacfile.sh" $@
 }
 
 fkit() {
 	if [[ "$1" == l ]]; then
-		"$fkit_path/clink.sh"
+		"$sh_path/clink.sh"
 	elif [[ "$?" == g ]]; then
-		"$fkit_path/gitplug.sh"
+		"$sh_path/gitplug.sh"
 	fi
 }
