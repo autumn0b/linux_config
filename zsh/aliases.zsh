@@ -20,6 +20,7 @@ alias ls="eza --icons --group-directories-first"
 alias ll="eza -la --icons --git --group-directories-first"
 alias lt="eza --tree --level=2 --icons"
 alias wm="wikiman"
+alias help="run-help"
 
 alias cd="z"
 
@@ -28,6 +29,7 @@ alias grep="grep --color --ignore-case"
 alias mpv90="mpv --vf=rotate=90"
 alias ff="fastfetch"
 alias snv="sudo -E nvim"
+alias vi="nvim"
 alias bc="bc -q"
 
 #   [s]way [nc]
@@ -62,6 +64,7 @@ alias idlec="nvim $HOME/.config/hypr/hypridle.conf"
 alias bgc="nvim $HOME/.config/hypr/hyprpaper.conf"
 alias waybarc="nvim $HOME/.config/waybar/style.css"
 alias rofic="nvim $HOME/.config/rofi/config.rasi"
+alias yazic="nvim $HOME/.config/yazi/yazi.toml"
 
 
 # @yazi

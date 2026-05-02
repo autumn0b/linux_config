@@ -1,19 +1,14 @@
-# todo -> add support for AUR packages
-
 #!/usr/bin/env bash
 set -euo pipefail
 
-declare -r RED='\e[31m'
-declare -r YELLOW='\e[33m'
-declare -r CYAN='\e[36m'
-declare -r RESET='\e[0m'
 
-declare -r fkit_path="$HOME/.config/fabrikit"
+fkit_path="$HOME/.config/fabrikit"
 
 conf_pkgs=()
 # packages are only added to the lock file if installed
 lock_pkgs=()
 
+warn_pkgs=()
 installed_pkgs=()
 
 
@@ -42,18 +37,42 @@ pacf_remove()
 	local pkg
 	for pkg in "$@"; do
 		pacman -Si "$pkg" &> /dev/null || {
-			printf "${RED}%s${RESET}\n" "* '$pkg' is invalid" >&2
+			printf "\e[31m%s\e[0m\n" "* '$pkg' is invalid"
 			return 1
 		}
 
 		grep -qxF "$pkg" "$fkit_path/pkgs.lock" || {
-			printf "${RED}%s${RESET}\n" "* '$pkg' not found" >&2
-			return 1
+			(printf "\e[31m%s\e[0m\n" "* '$pkg' not found"
+			return 1)
 		}
 
 		sed -i "/^$pkg$/d" "$fkit_path/pkgs.lock"
 		printf "removed '%s'\n" "$pkg"
 	done
+}
+
+
+pacf_exit()
+{
+
+	if [[ "${#warn_pkgs[@]}" -gt 0 ]]; then
+		printf "\e[33m%s\e[0m\n" "# warning: package(s) resolved"
+
+		local warn_fix=()
+		mapfile -t warn_fix < <(print_pkgs "${warn_pkgs[@]}" \
+			| xargs pacman -Spdd --print-format "%n" | sort -u)
+
+		local i
+		for i in "${!warn_pkgs[@]}"; do
+			printf "%s => %s\n" "${warn_pkgs[$i]}" "${warn_fix[$i]}"
+		done
+		printf "\n"
+	fi
+
+	if [[ "${#added_pkgs[@]}" -lt 1 && "${#removed_pkgs[@]}" -lt 1 ]]; then
+		printf "\e[36m%s\e[0m\n" "# no changes found"
+	fi
+
 }
 
 
@@ -63,7 +82,7 @@ display_changes()
 		return 0
 	fi
 
-	printf "${CYAN}%s${RESET}\n" "# changes found..."
+	printf "\e[36m%s\e[0m\n" "# changes found..."
 	if [[ "${#removed_pkgs[@]}" -ne 0 ]]; then
 		printf -- "- removed: %s\n" "${#removed_pkgs[@]}"
 		printf "\t%s\n" "${removed_pkgs[@]}" | column
@@ -91,11 +110,11 @@ display_versioned()
 		<(print_pkgs "${lock_pkgs[@]}") \
 		<(print_pkgs "${installed_pkgs[@]}"))
 
-	if [[ "${#dropped_pkgs[@]}" -eq 0 && "${#included_pkgs[@]}" -eq 0 ]]; then
+	if [[ "${#dropped_pkgs[@]}" -lt 1 && "${#included_pkgs[@]}" -lt 1 ]]; then
 		return 0
 	fi
 
-	printf "${CYAN}%s${RESET}\n" "# now tracking..."
+	printf "\e[36m%s\e[0m\n" "# now tracking..."
 	if [[ "${#dropped_pkgs[@]}" -gt 0 ]]; then
 		# lock = lock - dropped
 		printf -- "- dropped: %s\n" "${#dropped_pkgs[@]}"
@@ -104,7 +123,7 @@ display_versioned()
 	if [[ "${#included_pkgs[@]}" -gt 0 ]]; then
 		# lock = lock + included
 		printf -- "- included: %s\n" "${#included_pkgs[@]}"
-		printf "\t%s\n" "${included_pkgs[@]}" | column
+		printf "    %s\n" "${included_pkgs[@]}" | column
 	fi
 	printf "\n"
 }
@@ -122,7 +141,7 @@ version_pkgs()
 	if [[ "${#arr[@]}" -gt 0 ]]; then
 		local pkg
 		for pkg in "${arr[@]}"; do
-			sed -i "/^$pkg$/d" "$fkit_path/pkgs.lock"
+			pacf_remove "$pkg"
 		done
 	fi
 
@@ -137,18 +156,56 @@ version_pkgs()
 		<(print_pkgs "${lock_pkgs[@]}")    \
 		<(print_pkgs "${installed_pkgs[@]}"))
 
-	local temp
-	temp=$(mktemp)
 	print_pkgs "${conf_and_installed[@]}" "${lock_and_installed[@]}"\
-		| sort -u > "$temp" && mv "$temp" "$fkit_path/pkgs.lock"
+		| sort -u > "$fkit_path/pkgs.lock"
 
 	display_versioned
 }
 
 
+# example : pacman resolves glfw-wayland to glfw, but comm doesn't match the
+# 	differing names so it never gets added to pkgs.lock
+# pacman resolves package names before adding to conf_pkgs
+get_conf_pkgs()
+{
+	mapfile -t pre_conf_pkgs < <(
+		sed -e 's/[[:space:]]*#.*//g' "$fkit_path/pkgs.conf" \
+		| tr -s '[:space:]' '\n'                             \
+		| sed '/^$/d'                                        \
+		| sort -u)
+
+	mapfile -t conf_pkgs < <(
+		print_pkgs "${pre_conf_pkgs[@]}"         \
+		| xargs pacman -Spdd --print-format "%n" \
+		| sort -u)
+
+	mapfile -t warn_pkgs < <(comm -23           \
+		<(print_pkgs "${pre_conf_pkgs[@]}") \
+		<(print_pkgs "${conf_pkgs[@]}"))
+}
+
+
 init_pkgs()
 {
+	# read from pkgs.conf and pkgs.lock to check for
+	# current pacfile state and user changes
+	get_conf_pkgs
 	mapfile -t lock_pkgs < <(sort -u "$fkit_path/pkgs.lock")
+
+	mapfile -t added_pkgs < <(comm -23      \
+		<(print_pkgs "${conf_pkgs[@]}") \
+		<(print_pkgs "${lock_pkgs[@]}"))
+	mapfile -t removed_pkgs < <(comm -13    \
+		<(print_pkgs "${conf_pkgs[@]}") \
+		<(print_pkgs "${lock_pkgs[@]}"))
+
+	# update pkgs.lock to reflect discrepencies in system state before making changes
+	#   relevant if packages were installed or uninstalled outside of the script
+	version_pkgs
+
+	# re-read from pkgs.lock after updates
+	mapfile -t lock_pkgs < <(sort -u "$fkit_path/pkgs.lock")
+
 	mapfile -t added_pkgs < <(comm -23      \
 		<(print_pkgs "${conf_pkgs[@]}") \
 		<(print_pkgs "${lock_pkgs[@]}"))
@@ -162,7 +219,7 @@ modify_system()
 {
 	# remove
 	if [[ "${#removed_pkgs[@]}" -ne 0 ]]; then
-		printf "${CYAN}%s${RESET}\n" "# removing..."
+		printf "\e[36m%s\e[0m\n" "# removing..."
 		sudo pacman -Rns "${removed_pkgs[@]}"
 	fi
 
@@ -170,11 +227,11 @@ modify_system()
 	if [[ "${#added_pkgs[@]}" -ne 0 ]]; then
 		# separate update and install steps to distinguish
 		# script-managed packages from update dependencies
-		printf "${CYAN}%s${RESET}\n" "# updating..."
+		printf "\e[36m%s\e[0m\n" "# updating..."
 		sudo pacman -Syu
 		printf "\n"
 
-		printf "${CYAN}%s${RESET}\n" "# installing..."
+		printf "\e[36m%s\e[0m\n" "# installing..."
 		# let pacman handle invalid package names
 		sudo pacman -S --needed "${added_pkgs[@]}"
 		printf "\n"
@@ -182,48 +239,8 @@ modify_system()
 }
 
 
-validate_pkgs()
-{
-	declare -A db
-	while IFS= read -r pkg; do
-		db["$pkg"]=1
-	done < <(pacman -Sql)
-
-	for pkg in "${added_pkgs[@]}"; do
-		[[ -v db["$pkg"] ]] || {
-			printf "${RED}%s${RESET}\n" "* '$pkg' is invalid" >&2
-			return 1
-		}
-	done
-
-}
-
-
 pacf_update()
 {
-	# read from pkgs.conf and pkgs.lock to check for
-	# current pacfile state and user changes
-	mapfile -t conf_pkgs < <(
-		sed -e 's/[[:space:]]*#.*//g' "$fkit_path/pkgs.conf" \
-		| tr -s '[:space:]' '\n'                             \
-		| sed '/^$/d'                                        \
-		| sort -u)
-	
-	init_pkgs
-
-	if [[ "${#added_pkgs[@]}" -eq 0 && "${#removed_pkgs[@]}" -eq 0 ]]; then
-		printf "${CYAN}%s${RESET}\n" "# no changes found"
-	fi
-
-	if [[ "${#added_pkgs[@]}" -gt 0 ]]; then
-		validate_pkgs
-	fi
-
-	# update pkgs.lock to reflect discrepencies in system state before making changes
-	#   relevant if packages were installed or uninstalled outside of the script
-	version_pkgs
-
-	# re-read from pkgs.lock after updates
 	init_pkgs
 
 	display_changes
@@ -231,31 +248,29 @@ pacf_update()
 	modify_system
 
 	version_pkgs
+
+	pacf_exit
 }
 
 
 pacf_checks()
 {
-	if ! command -v pacman > /dev/null; then
-		printf "${RED}%s${RESET}\n" "* pacman not found" >&2
-	 	return 1
-	fi
-	if ! command -v sudo > /dev/null; then
-		printf "${RED}%s${RESET}\n" "* sudo not found" >&2
+	if command -v pacman > /dev/null; then
+		printf "\e[31m%s\e[0m\n" "* pacman not found"
 		return 1
 	fi
 
 	if [[ ! -d "$fkit_path" ]]; then
-		printf "${RED}%s${RESET}\n" "* fkit_path not found: $fkit_path" >&2
+		printf "\e[31m%s\e[0m\n" "* fkit_path not found: $fkit_path"
 		return 1
 	fi
 	# check if files exist
 	if [[ ! -f "$fkit_path/pkgs.conf" ]]; then
-		printf "${RED}%s${RESET}\n" "* config not found" >&2
+		printf "\e[31m%s\e[0m\n" "* config not found"
 		return 1
 	fi
 	if [[ ! -f "$fkit_path/pkgs.lock" ]]; then
-		printf "${CYAN}%s${RESET}\n" "# creating lock file..."
+		printf "\e[36m%s\e[0m\n" "# creating lock file..."
 		touch "$fkit_path/pkgs.lock"
 	fi
 }
@@ -273,7 +288,7 @@ main()
 	if [[ "$1" == r ]]; then
 		pacf_remove "${@:2}"
 	else
-		printf "${RED}%s${RESET}\n" "* unknown command '$1'" >&2
+		printf "\e[31m%s\e[0m\n" "* unknown command '$1'" >&2
 		printf -- "usage: pf [r <pkg>]\n" >&2
 		exit 1
 	fi

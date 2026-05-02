@@ -2,6 +2,7 @@ base-devel
 bash-language-server
 bc
 clang
+cmake
 code
 discord
 eza
@@ -13,6 +14,7 @@ fzf
 gcc
 ghostty
 git
+glfw
 glslang
 grim
 gsimplecal
@@ -29,6 +31,7 @@ man-db
 man-pages
 mpv
 neovim
+ninja
 openssh
 pavucontrol
 pipewire
@@ -38,6 +41,7 @@ ripgrep
 rofi
 shaderc
 slurp
+spirv-headers
 spirv-tools
 starship
 steam
@@ -46,6 +50,10 @@ swaync
 tealdeer
 ttf-jetbrains-mono-nerd
 unzip
+vulkan-headers
+vulkan-tools
+vulkan-utility-libraries
+vulkan-validation-layers
 waybar
 wget
 wikiman
@@ -56,4 +64,5 @@ yazi
 zoxide
 zsh
 zsh-autosuggestions
+zsh-doc
 zsh-syntax-highlighting

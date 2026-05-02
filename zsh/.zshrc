@@ -1,3 +1,21 @@
+
+export GROFF_NO_SGR=1
+export LESS_TERMCAP_mb=$'\e[1;31m'
+export LESS_TERMCAP_md=$'\e[1;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[1;33;44m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[4;1;32m'
+export LESS_TERMCAP_mr=$'\e[7m'
+export LESS_TERMCAP_mh=$'\e[2m'
+export LESS_TERMCAP_ZN=$'\e[74m'
+export LESS_TERMCAP_ZV=$'\e[75m'
+export LESS_TERMCAP_ZO=$'\e[73m'
+export LESS_TERMCAP_ZW=$'\e[75m'
+export MANPAGER='less'
+
+
 # ======= #
 # Options #
 # ======= #
@@ -11,6 +29,11 @@ export FZF_DEFAULT_OPTS="
 	--color=border:#44415a,header:#3e8fb0,gutter:#232136
 	--color=spinner:#f6c177,info:#9ccfd8
 	--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
+
+unalias run-help 2>/dev/null
+autoload -Uz run-help
+autoload -Uz run-help-git  # optional helpers for subcommands
+
 
 # ======= #
 # Visuals #
@@ -34,6 +57,14 @@ HISTFILE=~/.cache/zsh/history/
 # ======== #
 # Keybinds #
 # ======== #
+
+function clear-screen-scrollback() {
+    printf '\033[2J\033[3J\033[H'
+    zle reset-prompt
+}
+zle -N clear-screen-scrollback
+bindkey '^L' clear-screen-scrollback
+
 
 if [[ $- == *i* ]] && [[ -z "$ZELLIJ" ]] && \
    [[ -n "$WAYLAND_DISPLAY" || -n "$DISPLAY" ]]; then
@@ -117,3 +148,5 @@ source $HOME/sync/config/zsh/nvim.zsh
 
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+
