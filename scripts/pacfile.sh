@@ -27,16 +27,6 @@ print_pkgs()
 }
 
 
-debug_print()
-{
-	local -n _arr=$1
-	local i
-	for i in "${!_arr[@]}"; do
-		printf "[%s] %s\n" "$i" "${_arr[$i]}"
-	done
-}
-
-
 pacf_remove()
 {
 	local pkg
